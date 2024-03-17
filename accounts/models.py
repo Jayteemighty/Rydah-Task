@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 
-
 class User(AbstractUser):
     """
     Custom user model to store user profiles.
@@ -41,6 +40,21 @@ class User(AbstractUser):
         _("last name"), max_length=100, null=False, blank=False
     )
 
+    groups = models.ManyToManyField(
+        "auth.Group",
+        verbose_name=_("groups"),
+        blank=True,
+        related_name="user_custom_set",  # Custom related name to avoid clashes
+        related_query_name="user_custom",
+    )
+
+    user_permissions = models.ManyToManyField(
+        "auth.Permission",
+        verbose_name=_("user permissions"),
+        blank=True,
+        related_name="user_custom_set",  # Custom related name to avoid clashes
+        related_query_name="user_custom",
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = (

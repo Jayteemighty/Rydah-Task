@@ -5,7 +5,6 @@ from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 import logging
-from ratelimit.decorators import ratelimit
 
 User = get_user_model()
 
@@ -15,7 +14,7 @@ class RegisterAPIView(APIView):
     """
     API endpoint for user registration using Google OAuth.
     """
-    @ratelimit(key='ip', rate='5/m', method='POST', block=True)
+    
     def post(self, request):
         """
         Register a new user.
@@ -36,7 +35,7 @@ class LoginAPIView(APIView):
     """
     API endpoint for user login.
     """
-    @ratelimit(key='ip', rate='10/m', method='POST', block=True)
+    
     def post(self, request):
         """
         Login an existing user.
