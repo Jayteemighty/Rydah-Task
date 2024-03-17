@@ -1,33 +1,68 @@
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
+import logging
+from ratelimit.decorators import ratelimit
 
+User = get_user_model()
 
-class RegisterAPIView(CreateAPIView):
+logger = logging.getLogger(__name__)
+
+class RegisterAPIView(APIView):
     """
-    API View for user registration.
+    API endpoint for user registration using Google OAuth.
     """
-    serializer_class = UserSerializer
-
-
-class LoginAPIView(GenericAPIView):
-    """
-    API View for user login.
-    """
-    serializer_class = UserSerializer
-
+    @ratelimit(key='ip', rate='5/m', method='POST', block=True)
     def post(self, request):
-        serializer = self.get_serializer(data=request.data)
+        """
+        Register a new user.
+        """
+        logger.info("API POST request for user registration")
+        
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.validated_data
-            refresh = RefreshToken.for_user(user)
-            return Response(
-                {
-                    "refresh": str(refresh),
-                    "access": str(refresh.access_token),
-                },
-                status=status.HTTP_200_OK,
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            logger.info("User registered successfully")
+            return Response("User registered successfully", status=status.HTTP_201_CREATED)
+        else:
+            logger.error("User registration failed: %s", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginAPIView(APIView):
+    """
+    API endpoint for user login.
+    """
+    @ratelimit(key='ip', rate='10/m', method='POST', block=True)
+    def post(self, request):
+        """
+        Login an existing user.
+        """
+        logger.info("API POST request for user login")
+
+        # Extract access token from request data
+        access_token = request.data.get('access_token', None)
+        if not access_token:
+            logger.error("Access token is required")
+            return Response("Access token is required", status=status.HTTP_400_BAD_REQUEST)
+
+        # Get user information from Google using access token
+        try:
+            social_account = SocialAccount.objects.get(extra_data__contains={'access_token': access_token})
+        except SocialAccount.DoesNotExist:
+            logger.error("Invalid access token")
+            return Response("Invalid access token", status=status.HTTP_400_BAD_REQUEST)
+
+        # Get or create user based on Google account email
+        try:
+            user = User.objects.get(email=social_account.user.email)
+        except User.DoesNotExist:
+            user = User.objects.create_user(email=social_account.user.email)
+
+        # You may customize this part to fetch more data from the social account if needed
+
+        logger.info("User logged in successfully")
+        return Response("User logged in successfully", status=status.HTTP_200_OK)
