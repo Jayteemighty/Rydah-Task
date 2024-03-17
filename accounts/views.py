@@ -37,6 +37,7 @@ class RegisterAPIView(APIView):
         return Response("User registered successfully", status=status.HTTP_201_CREATED)
 
 
+
 class LoginAPIView(APIView):
     """
     API endpoint for user login using Google OAuth.
