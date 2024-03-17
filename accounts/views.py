@@ -5,6 +5,7 @@ from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 import logging
+from social_django.utils import psa
 
 User = get_user_model()
 
@@ -15,20 +16,21 @@ class RegisterAPIView(APIView):
     API endpoint for user registration using Google OAuth.
     """
     
-    def post(self, request):
+    @psa()
+    def post(self, request, backend='google-oauth2'):
         """
         Register a new user.
         """
-        logger.info("API POST request for user registration")
+        user = request.backend.do_auth(request.data)
         
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        if user:
+            # User authenticated successfully
             logger.info("User registered successfully")
             return Response("User registered successfully", status=status.HTTP_201_CREATED)
         else:
-            logger.error("User registration failed: %s", serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Authentication failed
+            logger.error("User registration failed")
+            return Response("User registration failed", status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPIView(APIView):
