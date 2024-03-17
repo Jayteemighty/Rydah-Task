@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'accounts',
     
     #Third Party Apps
-    #'ratelimit',
     'rest_framework',
     'allauth',
     'allauth.account',
@@ -62,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #'django.contrib.sessions.middleware.SessionMiddleware',
     
     'allauth.account.middleware.AccountMiddleware',
 ]
