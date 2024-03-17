@@ -173,3 +173,8 @@ SITE_ID = 2
 
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+
+RATELIMIT_VIEW = {
+    'accounts.views.RegisterAPIView': '5/m',
+    'accounts.views.LoginAPIView': '10/m',
+}
