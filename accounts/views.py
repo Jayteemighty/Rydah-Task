@@ -5,7 +5,6 @@ from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
 import logging
-from social_django.utils import psa
 
 User = get_user_model()
 
@@ -15,55 +14,50 @@ class RegisterAPIView(APIView):
     """
     API endpoint for user registration using Google OAuth.
     """
-    
-    @psa()
-    def post(self, request, backend='google-oauth2'):
+    def post(self, request):
         """
         Register a new user.
         """
-        user = request.backend.do_auth(request.data)
+        logger.info("API POST request for user registration")
         
-        if user:
-            # User authenticated successfully
-            logger.info("User registered successfully")
-            return Response("User registered successfully", status=status.HTTP_201_CREATED)
-        else:
-            # Authentication failed
-            logger.error("User registration failed")
-            return Response("User registration failed", status=status.HTTP_400_BAD_REQUEST)
+        email = request.data.get('email', None)
+        if not email:
+            logger.error("Email is required")
+            return Response("Email is required", status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if user already exists
+        if User.objects.filter(email=email).exists():
+            logger.error("User already registered")
+            return Response("User already registered", status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new user
+        user = User.objects.create_user(email=email)
+
+        logger.info("User registered successfully")
+        return Response("User registered successfully", status=status.HTTP_201_CREATED)
 
 
 class LoginAPIView(APIView):
     """
-    API endpoint for user login.
+    API endpoint for user login using Google OAuth.
     """
-    
     def post(self, request):
         """
         Login an existing user.
         """
         logger.info("API POST request for user login")
 
-        # Extract access token from request data
-        access_token = request.data.get('access_token', None)
-        if not access_token:
-            logger.error("Access token is required")
-            return Response("Access token is required", status=status.HTTP_400_BAD_REQUEST)
+        email = request.data.get('email', None)
+        if not email:
+            logger.error("Email is required")
+            return Response("Email is required", status=status.HTTP_400_BAD_REQUEST)
 
-        # Get user information from Google using access token
+        # Check if user exists in the database
         try:
-            social_account = SocialAccount.objects.get(extra_data__contains={'access_token': access_token})
-        except SocialAccount.DoesNotExist:
-            logger.error("Invalid access token")
-            return Response("Invalid access token", status=status.HTTP_400_BAD_REQUEST)
-
-        # Get or create user based on Google account email
-        try:
-            user = User.objects.get(email=social_account.user.email)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
-            user = User.objects.create_user(email=social_account.user.email)
-
-        # You may customize this part to fetch more data from the social account if needed
+            logger.error("User not found")
+            return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
         logger.info("User logged in successfully")
         return Response("User logged in successfully", status=status.HTTP_200_OK)
