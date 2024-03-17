@@ -45,12 +45,12 @@ INSTALLED_APPS = [
     'accounts',
     
     #Third Party Apps
+    #'ratelimit',
     'rest_framework',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'ratelimit',
 ]
 
 MIDDLEWARE = [
@@ -174,7 +174,26 @@ SITE_ID = 2
 GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
 
-RATELIMIT_VIEW = {
-    'accounts.views.RegisterAPIView': '5/m',
-    'accounts.views.LoginAPIView': '10/m',
+#Logging Api Responses and Requests config
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logfile.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }
