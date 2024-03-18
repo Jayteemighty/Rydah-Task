@@ -31,7 +31,7 @@ To access the source code and documentation, follow these steps:
 1. Open your terminal or command prompt.
 2. Navigate to the directory where you want to clone the repository.
 3. Check this https://testdriven.io/blog/django-rest-auth/ on how to create your Google developer console to access GOOGLE_CLIENT_SECRET for your .env file
-3. Use the following command to clone the repository:
+4. Use the following command to clone the repository:
 
    ```bash
    git clone https://github.com/Jayteemighty/Rydah-Task.git
