@@ -4,19 +4,24 @@ REST APIs for google oauth
 # API Documentation
 
 Welcome to the API documentation! 
-This document provides information on how to access and explore the API endpoints using Swagger.
+This document provides information on how to access and explore the API endpoints
 
 ## Tech Stack
 
-The E-Commerce Django Store utilizes the following technologies and frameworks:
+Utilizes the following technologies and frameworks:
 
 - Python: A powerful programming language used for the backend development.
 - Django REST framework: A powerful and flexible toolkit for building Web APIs.
 - Git: A distributed version control system used for tracking changes in source code during software development.
 
+## Prerequisite Download
+1. Python
+2. Vscode
+3. PostgreSQL
+
 ## How to Run the Project
 
-To run the E-Commerce Django Backend on your local machine, follow these steps:
+To run the project on your local machine, follow these steps:
 
 
 ## Cloning the Repository
@@ -28,7 +33,7 @@ To access the source code and documentation, follow these steps:
 3. Use the following command to clone the repository:
 
    ```bash
-   git clone https://github.com/Jayteemighty/Pbreport-final.git
+   git clone https://github.com/Jayteemighty/Rydah-Task.git
 
 ## Running the Server
 
