@@ -2,6 +2,3 @@ venv
 .env
 config/__pycache__
 accounts/__pycache__
-logfile.log
-tests
-.pytest_cache
