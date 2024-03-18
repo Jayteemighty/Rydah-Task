@@ -30,6 +30,7 @@ To access the source code and documentation, follow these steps:
 
 1. Open your terminal or command prompt.
 2. Navigate to the directory where you want to clone the repository.
+3. Check this https://testdriven.io/blog/django-rest-auth/ on how to create your Google developer console to access GOOGLE_CLIENT_SECRET for your .env file
 3. Use the following command to clone the repository:
 
    ```bash
@@ -45,7 +46,8 @@ Before accessing the API documentation, ensure that you have the necessary depen
    ```bash
    pip install -r requirements.txt
 
-3. Start the server by running the following command:
+3. Make sure to setup your environment variable(.env) check the .env.example
+4. Start the server by running the following command:
 
    ```bash
    python manage.py runserver
@@ -57,7 +59,7 @@ Before accessing the API documentation, ensure that you have the necessary depen
 2. Open your web browser. Enter the following URL in the address bar:
 
    ```bash
-   http://localhost:8000/swagger/
+   http://localhost:8000/schema/
    
 This URL points to the Swagger UI interface for the API documentation.
 
