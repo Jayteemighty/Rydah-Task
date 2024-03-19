@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import os
+
 from decouple import config
-#from social_core.pipeline.partial import partial
+
+# from social_core.pipeline.partial import partial
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,11 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django.contrib.sites',
-    
-    #Apps
+    # Apps
     'accounts',
-    
-    #Third Party Apps
+    # Third Party Apps
     'rest_framework',
     "rest_framework.authtoken",
     'dj_rest_auth.registration',
@@ -65,8 +64,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    #'django.contrib.sessions.middleware.SessionMiddleware',
-    
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -94,22 +92,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-#DATABASES = {
-#    "default": {
-#        "ENGINE": "django.db.backends.sqlite3",
-#        "NAME": BASE_DIR / "db.sqlite3",
-#    }
-#}
-
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("DB_NAME"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
+        "NAME": config("POSTGRES_NAME"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT"),
         "CONN_MAX_AGE": 600,
     }
 }
@@ -159,12 +150,12 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-    ]
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Rydah Task",
-    }
+}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -172,10 +163,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-#Oauth Configurations
+# Oauth Configurations
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'FETCH_USERINFO' : True,
+        'FETCH_USERINFO': True,
         'SCOPE': [
             'profile',
             'email',
@@ -183,11 +174,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'APP': {
-            'client_id': config('GOOGLE_CLIENT_ID'),
-            'secret': config('GOOGLE_CLIENT_SECRET'),
-            'key': ''
-        }
+        'APP': {'client_id': config('GOOGLE_CLIENT_ID'), 'secret': config('GOOGLE_CLIENT_SECRET'), 'key': ''},
     }
 }
 
@@ -203,3 +190,5 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

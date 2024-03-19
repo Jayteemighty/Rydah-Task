@@ -1,0 +1,38 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+django = "*"
+pandas = "*"
+requests = "*"
+python-jose = "*"
+psycopg2-binary = "*"
+djangorestframework = "*"
+python-decouple = "*"
+django-allauth = "*"
+dj_rest_auth = "*"
+drf-spectacular = "*"
+
+[dev-packages]
+isort = "*"
+black = "*"
+flake8 = "*"
+pytest = "*"
+pytest-django = "*"
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+lint = "flake8 --exclude=*/admin.py,*/migrations/*.py,*/urls.py --max-line-length=120"
+test = "pytest -vvs"
+dev = "python manage.py runserver"
+test-unit = "pytest -vvs tests/unit"
+isort-format = "isort ."
+black-format = "black ."
+makemigrations = "python manage.py makemigrations"
+migrate = "python manage.py migrate"
+createsuperuser = "python manage.py createsuperuser"
