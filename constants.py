@@ -1,0 +1,7 @@
+KEY = 'key'
+USERNAME = 'username'
+JSON = 'json'
+EMAIL = 'email'
+PASSWORD = 'password'
+PASSWORD1 = 'password1'
+PASSWORD2 = 'password2'

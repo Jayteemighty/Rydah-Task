@@ -1,0 +1,15 @@
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+
+[tool.isort]
+honor_noqa = true
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+skip_gitignore = true
+star_first = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"  # replace with your project settings
+python_files = ["test_*.py", "*_test.py", "tests/*.py"]

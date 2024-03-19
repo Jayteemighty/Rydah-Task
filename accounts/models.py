@@ -1,5 +1,10 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.auth.models import Group, Permission  # Add this import
+from django.contrib.auth.models import (  # Add this import
+    AbstractBaseUser,
+    BaseUserManager,
+    Group,
+    Permission,
+    PermissionsMixin,
+)
 from django.db import models
 from django.utils import timezone
 
@@ -41,19 +46,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    #USERNAME_FIELD = 'email'
+    # USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     # Fix reverse accessor clash for groups
-    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True,
-                                      related_name='user_groups')
-    
+    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='user_groups')
+
     # Fix reverse accessor clash for user_permissions
-    user_permissions = models.ManyToManyField(Permission, verbose_name='user permissions', blank=True,
-                                               related_name='user_permissions')
+    user_permissions = models.ManyToManyField(
+        Permission, verbose_name='user permissions', blank=True, related_name='user_permissions'
+    )
 
     def get_absolute_url(self):
         return "/users/%i/" % (self.pk)
