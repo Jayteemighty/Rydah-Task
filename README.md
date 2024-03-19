@@ -67,7 +67,12 @@ This URL points to the Swagger UI interface for the API documentation.
 
 3. Press Enter to navigate to the Swagger interface.
 
-4. Explore the API endpoints, request parameters, and response schemas using the Swagger UI.
+4. Explore the API endpoints such as:
+   ```bash
+   /api/register - Register a new user
+   /api/login - Logs in an existing user
+   /accounts/google/signup - verify new users
+   
 
 ## Conclusion
 
