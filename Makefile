@@ -23,6 +23,7 @@ static-test:
 test:
 	$(MAKE) static-test
 	pipenv run test
+	pytest
 
 quick-test:
 	# Pass ISOLATED_TEST env var to run a single test f.e. tests/integration/test_auth.py::test_login

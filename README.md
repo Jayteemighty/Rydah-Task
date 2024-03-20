@@ -46,7 +46,11 @@ Before accessing the API documentation, ensure that you have the necessary depen
 2. Install the required dependencies using the following command:
 
    ```bash
-   pipenv install
+   pipenv install 
+   
+   or
+
+   pip install -r requirements.txt
 
 3. Make sure to setup your environment variable(.env) check the .env.example
 4. Start the server by running the following command:
